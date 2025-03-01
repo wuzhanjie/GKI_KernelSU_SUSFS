@@ -1,15 +1,13 @@
 # 适用于GKI2.0设备的MKSU-SKN管理器和susfs内核
 
-# Kernels:
+# 内核:
  
-[GKI](https://github.com/WildPlusKernel/GKI_KernelSU_SUSFS)  
-[Sultan](https://github.com/WildPlusKernel/Sultan_KernelSU_SUSFS)  
-[OnePlus](https://github.com/WildPlusKernel/OnePlus_KernelSU_SUSFS)  
-[Legacy Pixels](https://github.com/WildPlusKernel/Pixel_KernelSU_SUSFS)  
+[GKI](https://github.com/ShirkNeko/GKI_KernelSU_SUSFS)    
+[一加](https://github.com/ShirkNeko/Action_OnePlus_MKSU_SUSFS)   
 
 ---
 
-# Other Links:
+# 其他链接:
 
 [Kernel Patches](https://github.com/WildPlusKernel/kernel_patches)  
 [Old Build Scripts](https://github.com/TheWildJames/kernel_build_scripts)  
@@ -17,57 +15,48 @@
 
 ---
 
-# Installation instructions: 
+# 安装说明: 
 
-Follow the steps for GKI:  
+按照 GKI 的步骤操作：  
 [Installation](https://kernelsu.org/guide/installation.html)
 
-To get boot.img format:  
-[Telegram Bot](https://t.me/wildpluskernel/22076)  
-[Get My Kernel Format](https://github.com/TheWildJames/Get_My_Kernel_Format)
+获取 boot.img 格式：
+
 
 ---
 
-# Features
+# 特点
 
-- **KernelSU**: KernelSU is a root solution for Android GKI devices, it works in kernel mode and grants root permission to userspace applications directly in kernel space.
-- **SUSFS**: An addon root hiding kernel patches and userspace module for KernelSU.
+- **MKSU-SKN**: MKSU-SKN 是安卓 GKI 设备的 root 解决方案，它工作于内核模式，可直接在内核空间为用户空间应用程序授予 root 权限。
+- **SUSFS**: 用于 MKSU-SKN 的根隐藏内核补丁和用户空间模块插件。
 
 ---
 
-# Credits
+# 贡献
 
 - **MKSU-SKN**: Developed by [ShirkNeko](https://github.com/ShirkNeko/KernelSU).  
 - **SUSFS**: Developed by [simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git).
 - **SUSFS Module**: Developed by [sidex15](https://github.com/sidex15).
 - **Sultan Kernels**: Developed by [kerneltoast](https://github.com/kerneltoast).
 
-Special thanks to the open-source community for their contributions!
-
 ---
 
-# Support
+# 免责声明
 
-If you encounter any issues or need help, feel free to open an issue in this repository or reach out to me.
-
----
-
-# Disclaimer
-
-Flashing this kernel will void your warranty, and there is always a risk of bricking your device. Please make sure to back up your data and ensure you understand the risks before proceeding.
-
-**Proceed at your own risk!**
+刷入此内核将导致保修失效，并且始终存在烧毁设备的风险。请务必备份数据，并确保了解风险后再进行操作。
+**请自行承担风险！**
 
 ---
 
 
-# Special thanks to the following people for their contributions!
-This helps me alot! <3
+# 特别感谢以下人员做出的贡献！
+这对我帮助很大！ <3
 
-[simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git) - Created SUSFS!  
-[sidex15](https://github.com/sidex15) - Created module!  
-[backslashxx](https://github.com/backslashxx) - Helped with patches!  
-[Teemo](https://github.com/liqideqq) - Helped with patches!  
-[幕落](https://github.com/MuLuo688) - Donation!
+[simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git) - 创建 SUSFS!  
+[sidex15](https://github.com/sidex15) - 创建模块!  
+[backslashxx](https://github.com/backslashxx) - 帮助修补!  
+[Teemo](https://github.com/liqideqq) - 帮助修补!  
+[幕落](https://github.com/MuLuo688) - 捐赠!
+[TheWildJames](https://github.com/TheWildJames/) - 创建了脚本
 
-If you have contributed and are not here please remind me!
+
