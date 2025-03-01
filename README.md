@@ -37,9 +37,7 @@ To get boot.img format:
 
 # Credits
 
-- **KernelSU**: Developed by [tiann](https://github.com/tiann).
-- **KernelSU-Next**: Developed by [rifsxd](https://github.com/rifsxd/KernelSU-Next).
-- **Magic-KSU**: Developed by [5ec1cff](https://github.com/5ec1cff/KernelSU).  
+- **MKSU-SKN**: Developed by [ShirkNeko](https://github.com/ShirkNeko/KernelSU).  
 - **SUSFS**: Developed by [simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git).
 - **SUSFS Module**: Developed by [sidex15](https://github.com/sidex15).
 - **Sultan Kernels**: Developed by [kerneltoast](https://github.com/kerneltoast).
@@ -68,10 +66,6 @@ Flashing this kernel will void your warranty, and there is always a risk of bric
 
 ---
 
-### If you need your kernel version added please let me know and I will build it!
-
-[Telegram](https://t.me/TheWildJames) NO DMS PLEASE! Ask in chat below!  
-[Telegram Group](https://t.me/wildpluskernel)  
 
 # Special thanks to the following people for their contributions!
 This helps me alot! <3
