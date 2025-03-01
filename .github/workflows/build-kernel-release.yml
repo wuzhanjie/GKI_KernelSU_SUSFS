@@ -17,10 +17,8 @@ on:
         required: true
         type: choice
         options:
-          - Official
-          - Next
           - MKSU
-        default: Next
+        default: MKSU
       kernelsu_branch:
         description: "Choose ksu branch"
         required: true
@@ -29,7 +27,7 @@ on:
           - Stable
           - Dev
           - Other
-        default: Stable
+        default: Dev
       kernelsu_branch_other:
         description: "If 'Other' is selected, specify your custom branch"
         required: false
@@ -127,12 +125,8 @@ jobs:
         if: ${{ inputs.kernelsu_branch == 'Dev' || inputs.kernelsu_variant == 'MKSU' }}
         run: |
           # Determine the branch based on user input
-          if [[ "${{ inputs.kernelsu_variant }}" == "Official" || "${{ inputs.kernelsu_variant }}" == "MKSU" ]]; then
-            BRANCH="main"
-          elif [[ "${{ inputs.kernelsu_variant }}" == "Next" ]]; then
-            BRANCH="next"
-          elif [[ "${{ inputs.kernelsu_branch }}" == "Other" && -n "${{ inputs.kernelsu_branch_other }}" ]]; then
-            BRANCH="${{ inputs.kernelsu_branch_other }}"
+          if [[ "${{ inputs.kernelsu_variant }}" == "MKSU" ]]; then
+            BRANCH="susfs"
           else
             echo "Error: Custom branch not provided for 'Other'" >&2
             exit 1
@@ -143,18 +137,10 @@ jobs:
 
       - name: Get commit hash or tag and generate URL for KernelSU-${{ inputs.kernelsu_variant }}
         run: |
-          if [ "${{ inputs.kernelsu_variant }}" == "Official" ]; then
-            echo "This is the Official variant"
-            REPO_URL="https://github.com/tiann/KernelSU.git"
-            REPO_URL2="tiann/KernelSU"
-          elif [ "${{ inputs.kernelsu_variant }}" == "Next" ]; then
-            echo "This is the Next variant"
-            REPO_URL="https://github.com/KernelSU-Next/KernelSU-Next.git"
-            REPO_URL2="KernelSU-Next/KernelSU-Next"
-          elif [ "${{ inputs.kernelsu_variant }}" == "MKSU" ]; then
+          if [ "${{ inputs.kernelsu_variant }}" == "MKSU" ]; then
             echo "This is the MKSU variant"
-            REPO_URL="https://github.com/5ec1cff/KernelSU.git"
-            REPO_URL2="5ec1cff/KernelSU"
+            REPO_URL="https://github.com/ShirkNeko/KernelSU.git"
+            REPO_URL2="ShirkNeko/KernelSU"
           else
             echo "Unknown variant"
           fi
@@ -227,26 +213,12 @@ jobs:
 
       - name: Append Commit Hashes & Links to `RELEASE_NOTES` & Append KernelSU-Next Reference to `RELEASE_NOTES`
         run: |
-          if [ "${{ inputs.kernelsu_variant }}" == "Official" ]; then
-            echo "This is the Official variant"
-            echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-            echo "$RELEASE_NOTES" >> $GITHUB_ENV
-            echo "Official Manager:" >> $GITHUB_ENV
-            echo "-> https://github.com/tiann/KernelSU" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-          elif [ "${{ inputs.kernelsu_variant }}" == "Next" ]; then
-            echo "This is the Next variant"
-            echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-            echo "$RELEASE_NOTES" >> $GITHUB_ENV
-            echo "Next Manager:" >> $GITHUB_ENV
-            echo "-> https://github.com/KernelSU-Next/KernelSU-Next" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-          elif [ "${{ inputs.kernelsu_variant }}" == "MKSU" ]; then
+          if [ "${{ inputs.kernelsu_variant }}" == "MKSU" ]; then
             echo "This is the MKSU variant"
             echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
             echo "$RELEASE_NOTES" >> $GITHUB_ENV
             echo "MKSU Manager:" >> $GITHUB_ENV
-            echo "-> https://github.com/5ec1cff/KernelSU" >> $GITHUB_ENV
+            echo "-> https://github.com/ShirkNeko/KernelSU" >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
           else
             echo "Unknown variant"
