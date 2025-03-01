@@ -34,10 +34,10 @@
 
 # 贡献
 
-- **MKSU-SKN**: Developed by [ShirkNeko](https://github.com/ShirkNeko/KernelSU).  
-- **SUSFS**: Developed by [simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git).
-- **SUSFS Module**: Developed by [sidex15](https://github.com/sidex15).
-- **Sultan Kernels**: Developed by [kerneltoast](https://github.com/kerneltoast).
+- **MKSU-SKN**: 开发者 [ShirkNeko](https://github.com/ShirkNeko/KernelSU).  
+- **SUSFS**: 开发者 [simonpunk](https://gitlab.com/simonpunk/susfs4ksu.git).
+- **SUSFS Module**: 开发者 [sidex15](https://github.com/sidex15).
+- **Sultan Kernels**: 开发者 [kerneltoast](https://github.com/kerneltoast).
 
 ---
 
