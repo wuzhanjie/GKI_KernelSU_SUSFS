@@ -245,7 +245,7 @@ jobs:
           elif [ "${{ inputs.kernelsu_variant }}" == "MKSU" ]; then
             echo "Applying SUSFS patches for MKSU..."
              cd ./KernelSU
-            cp ./patch/*
+            cp ./patch/* ./
             patch --fuzz=3 -p1 < MKSU-SKN_susfs.patch || true
             
           else
