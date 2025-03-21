@@ -142,7 +142,7 @@ jobs:
           # Clone repositories using the branch names
           git clone https://github.com/WildPlusKernel/AnyKernel3.git -b "gki-2.0"
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
-          git clone https://github.com/WildPlusKernel/kernel_patches.git
+          git clone https://github.com/ShirkNeko/SukiSU_patch.git
 
       - name: Set CONFIG Environment Variable
         run: |
@@ -249,7 +249,7 @@ jobs:
 
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
             echo "Applying hooks for SukiSU..."
-            cp ../../kernel_patches/hooks/new_hooks.patch ./
+            cp ../../SukiSU_patch/hooks/new_hooks.patch ./
             patch -p1 -F 3 < new_hooks.patch
           fi
           
@@ -258,7 +258,7 @@ jobs:
           echo "Changing to configuration directory: $CONFIG..."
           cd "$CONFIG/common"
           # Apply additional patch
-          cp ../../kernel_patches/69_hide_stuff.patch ./
+          cp ../../SukiSU_patch/69_hide_stuff.patch ./
           patch -p1 -F 3 < 69_hide_stuff.patch
             
       - name: Add SUSFS Configuration Settings
