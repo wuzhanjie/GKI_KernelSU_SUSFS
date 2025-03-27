@@ -226,6 +226,9 @@ jobs:
           cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch ./common/
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
+          cp -r ../SukiSU_patch/other/lz4k/include/linux/* ./common/include/linux
+          cp -r ../SukiSU_patch/other/lz4k/lib/* ./common/lib
+          cp -r ../SukiSU_patch/other/lz4k/crypto/* ./common/crypto
 
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
             echo "Applying SUSFS patches for SukiSU..."
@@ -290,6 +293,11 @@ jobs:
           echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
+
+          echo "obj-y += lz4k/" >> ./common/lib/Makefile
+          echo "obj-y += lz4kd/" >> ./common/lib/Makefile
+          echo "obj-y += lz4k.o" >> ./common/crypto/Makefile
+          echo "obj-y += lz4kd.o" >> ./common/crypto/Makefile
 
           # Add additional tmpfs config setting
           echo "CONFIG_TMPFS_XATTR=y" >> ./common/arch/arm64/configs/gki_defconfig
@@ -368,7 +376,8 @@ jobs:
           cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image.lz4 ./bootimgs
           cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image ./
           cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image.lz4 ./
-
+          cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/zram.ko ./
+          
           # Create gzip of the Image file
           gzip -n -k -f -9 ./Image > ./Image.gz
 
@@ -383,6 +392,7 @@ jobs:
           cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image.lz4 ./bootimgs
           cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image ./
           cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image.lz4 ./
+          cp ./$CONFIG/bazel-bin/common/kernel_aarch64/zram.ko ./
 
           # Create gzip of the Image file
           gzip -n -k -f -9 ./Image > ./Image.gz
@@ -410,6 +420,12 @@ jobs:
           mv ../Image.gz ./Image.gz
           zip -r "../$ZIP_NAME" ./*
           rm ./Image.gz
+
+          ZIP_NAME="${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}-zarm.ko.zip"
+          echo "Creating zip file: $ZIP_NAME..."
+          mv ../zram.ko ./zram.ko
+          zip -r "../$ZIP_NAME" ./*
+          rm ./zram.ko
 
       - name: Run Boot Image ${{ inputs.android_version }} Build Script
         if: ${{ inputs.android_version == 'android12' }}
