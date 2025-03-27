@@ -376,6 +376,7 @@ jobs:
           cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image.lz4 ./bootimgs
           cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image ./
           cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/Image.lz4 ./
+          cp ./$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist/zram.ko ./
 
           # Create gzip of the Image file
           gzip -n -k -f -9 ./Image > ./Image.gz
@@ -391,6 +392,7 @@ jobs:
           cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image.lz4 ./bootimgs
           cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image ./
           cp ./$CONFIG/bazel-bin/common/kernel_aarch64/Image.lz4 ./
+          cp ./$CONFIG/bazel-bin/common/kernel_aarch64/zram.ko ./
 
           # Create gzip of the Image file
           gzip -n -k -f -9 ./Image > ./Image.gz
@@ -418,6 +420,12 @@ jobs:
           mv ../Image.gz ./Image.gz
           zip -r "../$ZIP_NAME" ./*
           rm ./Image.gz
+
+          ZIP_NAME="${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}-zram.ko.zip"
+          echo "Creating zip file: $ZIP_NAME..."
+          mv ../zram.ko ./zram.ko
+          zip -r "../$ZIP_NAME" ./*
+          rm ./zram.ko
 
       - name: Run Boot Image ${{ inputs.android_version }} Build Script
         if: ${{ inputs.android_version == 'android12' }}
