@@ -430,7 +430,7 @@ jobs:
           rm ./Image.gz
       
       - name: Create zram.ko Archive
-      run: |
+        run: |
           echo "Creating zram.ko archive..."
           ZIP_NAME="${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}-zram.ko.zip"
           echo "Creating zip file: $ZIP_NAME..."
