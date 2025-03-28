@@ -258,7 +258,7 @@ jobs:
 
           cp ../../SukiSU_patch/other/lz4k_patch/lz4kd.patch ./
           patch -p1 -F 3 < lz4kd.patch || true
-          if ! grep -q '^CONFIG_ZRAM=m' ./common/arch/arm64/configs/gki_defconfig; then
+          if ! grep -q '^CONFIG_ZRAM=m' ./arch/arm64/configs/gki_defconfig; then
             cp ../../SukiSU_patch/other/lz4k_patch/zram_drv.patch ./
             patch -p1 -F 3 < zram_drv.patch || true
             cp -r -f ../../SukiSU_patch/other/lz4k_patch/drivers/block/zram/* ./drivers/block/zram/
