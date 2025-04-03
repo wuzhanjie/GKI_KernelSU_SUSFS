@@ -358,6 +358,11 @@ jobs:
 
           sed -i '$s|echo "\$res"|echo "\$res"|' ./common/scripts/setlocalversion
 
+          if [ "${{ inputs.kernel_version }}" != "5.10" ]; then
+          sed -i 'd' ./common/android/gki_aarch64_modules
+          sed -i 'd' ./common/android/gki_system_dlkm_modules
+          fi
+
           # Run perl command to modify UTS_VERSION
           perl -pi -e 's{UTS_VERSION="\$\(echo \$UTS_VERSION \$CONFIG_FLAGS \$TIMESTAMP \| cut -b -\$UTS_LEN\)"}{UTS_VERSION="#1 SMP PREEMPT Sat Apr 20 04:20:00 UTC 2024"}' ./common/scripts/mkcompile_h
 
