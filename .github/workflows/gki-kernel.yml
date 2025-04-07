@@ -419,6 +419,7 @@ jobs:
           curl -LSs "https://github.com/ShirkNeko/SukiSU_patch/blob/main/kpm/patch_linux" -o patch
           chmod 777 patch
           ./patch
+          rm -rf Image
           mv oImage Image
             
       - name: Create Bootimgs Folder and Copy Images
