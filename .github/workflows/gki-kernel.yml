@@ -410,6 +410,16 @@ jobs:
               tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast --lto=thin //common:kernel_aarch64_dist || exit 1
             fi
             ccache --show-stats
+
+      - name: Patch Image File
+        run: |
+          echo "Patching Image file..."
+          cd "$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist"
+          
+          curl -LSs "https://github.com/ShirkNeko/SukiSU_patch/blob/main/kpm/patch_linux" -o patch
+          chmod 777 patch
+          ./patch
+          mv oImage Image
             
       - name: Create Bootimgs Folder and Copy Images
         if: ${{ inputs.android_version == 'android12' || inputs.android_version == 'android13' }}
