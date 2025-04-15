@@ -163,6 +163,8 @@ jobs:
       # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Determine the branch for KernelSU-${{ inputs.kernelsu_variant }}
         if: ${{ inputs.kernelsu_branch == 'Dev' || inputs.kernelsu_variant == 'SukiSU' }}
@@ -179,7 +181,7 @@ jobs:
 
           # Store the selected branch in GITHUB_ENV
           echo "KSU_BRANCH=$BRANCH" >> $GITHUB_ENV
-
+        
       - name: Get commit hash or tag and generate URL for KernelSU-${{ inputs.kernelsu_variant }}
         run: |
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
