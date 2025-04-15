@@ -136,7 +136,7 @@ jobs:
         - build-kernel-a15-6-6
     if: ${{ inputs.make_release }}
     env:
-      REPO_OWNER: WildPlusKernel
+      REPO_OWNER: ShirkNeko
       REPO_NAME: GKI_KernelSU_SUSFS
       GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
       RELEASE_NAME: "*TEST BUILD* GKI Kernels With KernelSU-${{ inputs.kernelsu_variant }} ${{ inputs.kernelsu_branch }} & SUSFS v1.5.5 *TEST BUILD*"
