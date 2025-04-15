@@ -401,7 +401,7 @@ jobs:
         run: |
           if [ "${{ inputs.kernel_version }}" != "6.6" ]; then
             echo "Patching Image file..."
-            cd $CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist"
+            cd $CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist
             curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU_patch/refs/heads/main/kpm/patch_linux" -o patch
             chmod 777 patch
             ./patch
