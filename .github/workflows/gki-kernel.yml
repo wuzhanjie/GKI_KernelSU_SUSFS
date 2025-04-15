@@ -37,7 +37,7 @@ on:
 
 jobs:
   build-kernel-kernelsu-susfs:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
       CCACHE_NOHASHDIR: "true"
@@ -67,7 +67,7 @@ jobs:
 
       # Install ccache
       - name: Install ccache
-        run: sudo apt update && sudo apt install -y ccache
+        run: sudo apt update && sudo apt upgrade -y && sudo apt install -y ccache python3 git curl
 
       - name: Set up ccache
         run: |
