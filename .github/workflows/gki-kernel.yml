@@ -407,6 +407,7 @@ jobs:
             ./patch
             rm -rf Image
             mv oImage Image
+            cd "$CONFIG"
           fi
             
       - name: Create Bootimgs Folder and Copy Images
