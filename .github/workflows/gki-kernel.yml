@@ -398,10 +398,25 @@ jobs:
             ccache --show-stats
 
       - name: Patch Image File
+        if: ${{ inputs.android_version == 'android12' || inputs.android_version == 'android13' }}
         run: |
           if [ "${{ inputs.kernel_version }}" != "6.6" ]; then
             echo "Patching Image file..."
             cd "$CONFIG/out/${{ inputs.android_version }}-${{ inputs.kernel_version }}/dist"
+            curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU_patch/refs/heads/main/kpm/patch_linux" -o patch
+            chmod 777 patch
+            ./patch
+            rm -rf Image
+            mv oImage Image
+            cd ../../../..
+          fi
+
+      - name: Patch Image File
+        if: ${{ inputs.android_version == 'android14' || inputs.android_version == 'android15' }}
+        run: |
+          if [ "${{ inputs.kernel_version }}" != "6.6" ]; then
+            echo "Patching Image file..."
+            cd "$CONFIG/bazel-bin/common/kernel_aarch64/"
             curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU_patch/refs/heads/main/kpm/patch_linux" -o patch
             chmod 777 patch
             ./patch
