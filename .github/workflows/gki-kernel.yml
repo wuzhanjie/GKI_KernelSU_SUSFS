@@ -399,7 +399,7 @@ jobs:
             fi
             ccache --show-stats
 
-      - name: Patch Image File
+      - name: Patch Image File A12 & A13
         if: ${{ inputs.android_version == 'android12' || inputs.android_version == 'android13' }}
         run: |
           if [ "${{ inputs.kernel_version }}" != "6.6" ]; then
@@ -413,7 +413,7 @@ jobs:
             cd ../../../..
           fi
 
-      - name: Patch Image File
+      - name: Patch Image File A14 & A15
         if: ${{ inputs.android_version == 'android14' || inputs.android_version == 'android15' }}
         run: |
           if [ "${{ inputs.kernel_version }}" != "6.6" ]; then
