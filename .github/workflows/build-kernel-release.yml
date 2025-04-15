@@ -127,6 +127,9 @@ jobs:
 
   trigger-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     needs:
         - build-kernel-a12-5-10
         - build-kernel-a13-5-10
