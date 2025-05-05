@@ -63,11 +63,6 @@ on:
         required: false
         type: string  # This input is required if 'Other' is chosen
         default: ""  # Default is empty, but can be filled in if 'Other' is selected
-      ZRAM:
-        type: boolean
-        description: "是否启用添加更多的ZRAM算法？"
-        required: true
-        default: false
 
 jobs:
   build-kernel-a12-5-10:
@@ -79,7 +74,6 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
-      ZRAM: ${{ inputs.ZRAM }}
 
   build-kernel-a13-5-10:
     if: ${{ inputs.build_a13_510 }}
@@ -90,7 +84,6 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
-      ZRAM: ${{ inputs.ZRAM }}
 
   build-kernel-a13-5-15:
     if: ${{ inputs.build_a13_515 }}
@@ -101,7 +94,6 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
-      ZRAM: ${{ inputs.ZRAM }}
 
   build-kernel-a14-5-15:
     if: ${{ inputs.build_a14_515 }}
@@ -112,7 +104,6 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
-      ZRAM: ${{ inputs.ZRAM }}
 
   build-kernel-a14-6-1:
     if: ${{ inputs.build_a14_61 }}
@@ -123,7 +114,6 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
-      ZRAM: ${{ inputs.ZRAM }}
 
   build-kernel-a15-6-6:
     if: ${{ inputs.build_a15_66 }}
@@ -134,8 +124,7 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
-      ZRAM: ${{ inputs.ZRAM }}
-
+      
   trigger-release:
     runs-on: ubuntu-latest
     permissions:
