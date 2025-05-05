@@ -34,10 +34,6 @@ on:
       revision:
         required: false
         type: string
-      ZRAM: 
-        required: true
-        type: boolean
-        default: false
 
 jobs:
   build-kernel-kernelsu-susfs:
@@ -46,6 +42,7 @@ jobs:
       CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
       CCACHE_NOHASHDIR: "true"
       CCACHE_HARDLINK: "true"
+      ZRAM: "false"
 
     steps:
       - name: Maximize build space
@@ -274,7 +271,7 @@ jobs:
 
       - name: 复制源文件&应用LZ4KD&ZSTDN补丁
         run: |
-          if [[ "${{ inputs.ZRAM }}" == "true" ]]; then
+          if [[ "${{ env.ZRAM }}" == "true" ]]; then
             echo "Changing to configuration directory: $CONFIG..."
             cd "$CONFIG/common"
             cp -r ../../SukiSU_patch/other/zram/lz4k/include/linux/* ./include/linux/
@@ -296,7 +293,7 @@ jobs:
 
       - name: LZ4KD&ZSTDN配置
         run: |
-          if [[ "${{ inputs.ZRAM }}" == "true" ]]; then
+          if [[ "${{ env.ZRAM }}" == "true" ]]; then
             echo "写入LZ4KD&ZSTDN config依赖"
             CONFIG_FILE="$CONFIG/common/arch/arm64/configs/gki_defconfig"
 
