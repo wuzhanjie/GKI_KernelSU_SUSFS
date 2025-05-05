@@ -259,9 +259,6 @@ jobs:
             cp ../../SukiSU_patch/hooks/syscall_hooks.patch ./
             patch -p1 -F 3 < syscall_hooks.patch
           fi
-
-          #  cp ../../SukiSU_patch/other/lz4k_patch/${{ inputs.kernel_version }}/lz4kd.patch ./
-          #  patch -p1 -F 3 < lz4kd.patch || true
           
       - name: Apply Hide Stuff Patches
         run: |
@@ -270,6 +267,67 @@ jobs:
           # Apply additional patch
           #cp ../../SukiSU_patch/69_hide_stuff.patch ./
           #patch -p1 -F 3 < 69_hide_stuff.patch
+
+      - name: 复制源文件&应用LZ4KD补丁
+        run: |
+          echo "Changing to configuration directory: $CONFIG..."
+          cd "$CONFIG/common"
+          cp -r ../../SukiSU_patch/other/lz4k/include/linux/* ./include/linux/
+          cp -r ../../SukiSU_patch/other/lz4k/lib/* ./lib/
+          cp -r ../../SukiSU_patch/other/lz4k/crypto/* ./crypto/
+          
+          cp ../../SukiSU_patch/other/lz4k_patch/${{ inputs.kernel_version }}/lz4kd.patch ./
+          echo "正在打lz4kd补丁"
+          patch -p1 -F 3 < lz4kd.patch || true
+          echo '完成LZ4KD补丁'
+
+      - name: LZ4KD配置
+        run: |
+          echo "写入LZ4KD config依赖"
+          CONFIG_FILE="$CONFIG/common/arch/arm64/configs/gki_defconfig"
+
+          if [ "${{ inputs.kernel_version }}" = "5.10" ]; then
+            echo "CONFIG_ZSMALLOC=y" >> "$CONFIG_FILE"
+            echo "CONFIG_ZRAM=y" >> "$CONFIG_FILE"
+            echo "CONFIG_MODULE_SIG=n" >> "$CONFIG_FILE"
+            echo "CONFIG_CRYPTO_LZO=y" >> "$CONFIG_FILE"
+            echo "CONFIG_ZRAM_DEF_COMP_LZ4KD=y" >> "$CONFIG_FILE"
+          fi
+
+          if [ "${{ inputs.kernel_version }}" != "6.6" ] && [ "${{ inputs.kernel_version }}" != "5.10" ]; then
+            # sed -i 's/CONFIG_MODULE_SIG=y/CONFIG_MODULE_SIG=n/g' "$CONFIG_FILE"
+            if grep -q "CONFIG_ZSMALLOC" -- "$CONFIG_FILE"; then
+                echo "提示：文件 $CONFIG_FILE 包含字符串 CONFIG_ZSMALLOC。"
+                sed -i 's/CONFIG_ZSMALLOC=m/CONFIG_ZSMALLOC=y/g' "$CONFIG_FILE"
+            else
+                echo "警告：文件 $CONFIG_FILE 不包含字符串 CONFIG_ZSMALLOC。"
+                echo "CONFIG_ZSMALLOC=y" >> "$CONFIG_FILE"
+            fi
+                
+            sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' "$CONFIG_FILE"
+          fi
+
+          if [ "${{ inputs.kernel_version }}" = "6.6" ]; then
+            echo "CONFIG_ZSMALLOC=y" >> "$CONFIG_FILE"
+            sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' "$CONFIG_FILE"
+          fi
+
+          if [ "${{ inputs.android_version }}" = "android14" ] || [ "${{ inputs.android_version }}" = "android15" ]; then
+            sed -i 's/"drivers\/block\/zram\/zram\.ko",//g; s/"mm\/zsmalloc\.ko",//g' "$CONFIG/common/modules.bzl"
+            echo "CONFIG_MODULE_SIG_FORCE=n" >> "$CONFIG_FILE"
+            echo 'Android14_Bazel:已修复zram&zsmalloc'
+          elif [ "${{ inputs.kernel_version }}" = "5.15" ]; then
+            rm "$CONFIG/common/android/gki_aarch64_modules"
+            touch "$CONFIG/common/android/gki_aarch64_modules"
+            echo '5.15:已修复zram&zsmalloc'
+          fi
+
+          if grep -q "CONFIG_ZSMALLOC=y" "$CONFIG_FILE" && grep -q "CONFIG_ZRAM=y" "$CONFIG_FILE"; then
+            echo "CONFIG_CRYPTO_LZ4HC=y" >> "$CONFIG_FILE"
+            echo "CONFIG_CRYPTO_LZ4K=y" >> "$CONFIG_FILE"
+            echo "CONFIG_CRYPTO_LZ4KD=y" >> "$CONFIG_FILE"
+            echo "CONFIG_CRYPTO_842=y" >> "$CONFIG_FILE"
+          fi
             
       - name: Add SUSFS Configuration Settings
         run: |
@@ -301,32 +359,6 @@ jobs:
           echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
-
-          #if [ "${{ inputs.kernel_version }}" = "5.10" ]; then
-          #  echo "CONFIG_ZSMALLOC=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_ZRAM=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_MODULE_SIG=n" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_CRYPTO_LZO=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_ZRAM_DEF_COMP_LZ4KD=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #fi
-
-          #if [ "${{ inputs.kernel_version }}" != "6.6" ] && [ "${{ inputs.kernel_version }}" != "5.10" ]; then
-          #  sed -i 's/CONFIG_MODULE_SIG=y/CONFIG_MODULE_SIG=n/g' ./common/arch/arm64/configs/gki_defconfig
-          #  sed -i 's/CONFIG_ZSMALLOC=m/CONFIG_ZSMALLOC=y/g' ./common/arch/arm64/configs/gki_defconfig
-          #  sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' ./common/arch/arm64/configs/gki_defconfig
-          #fi
-
-          #if [ "${{ inputs.kernel_version }}" = "6.6" ]; then
-          #  echo "CONFIG_ZSMALLOC=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' ./common/arch/arm64/configs/gki_defconfig
-          #fi
-
-          #if grep -q "CONFIG_ZSMALLOC=y" ./common/arch/arm64/configs/gki_defconfig && grep -q "CONFIG_ZRAM=y" ./common/arch/arm64/configs/gki_defconfig; then
-          #  echo "CONFIG_CRYPTO_LZ4HC=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_CRYPTO_LZ4K=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_CRYPTO_LZ4KD=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #  echo "CONFIG_CRYPTO_842=y" >> ./common/arch/arm64/configs/gki_defconfig
-          #fi
           
           # Add additional tmpfs config setting
           echo "CONFIG_TMPFS_XATTR=y" >> ./common/arch/arm64/configs/gki_defconfig
