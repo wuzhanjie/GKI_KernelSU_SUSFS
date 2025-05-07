@@ -265,13 +265,13 @@ jobs:
             patch -p1 -F 3 < lz4kd.patch || true
             echo '完成LZ4KD补丁'
 
-            cp ../../SukiSU_patch/other/zram/zram_patch/${{ inputs.kernel_version }}/zstdn.patch ./
-            echo "正在打zstdn补丁"
-            patch -p1 -F 3 < zstdn.patch || true
-            echo '完成ZSTDN补丁'
+            cp ../../SukiSU_patch/other/zram/zram_patch/${{ inputs.kernel_version }}/lz4k_oplus.patch ./
+            echo "正在打lz4k_oplus补丁"
+            patch -p1 -F 3 < lz4k_oplus.patch || true
+            echo '完成lz4k_oplus补丁'
           fi
 
-      - name: LZ4KD&ZSTDN配置
+      - name: LZ4KD&Lz4k_oplus配置
         run: |
           if [[ "${{ env.ZRAM }}" == "true" ]]; then
             echo "写入LZ4KD&ZSTDN config依赖"
@@ -305,12 +305,11 @@ jobs:
 
             if [ "${{ inputs.android_version }}" = "android14" ] || [ "${{ inputs.android_version }}" = "android15" ]; then
               sed -i 's/"drivers\/block\/zram\/zram\.ko",//g; s/"mm\/zsmalloc\.ko",//g' "$CONFIG/common/modules.bzl"
-              sed -i '/^_ARM64_GKI_MODULES_LIST = \[/a \    "lib/zstdn/crypto_zstdn.ko",' "$CONFIG/common/modules.bzl"
               echo "CONFIG_MODULE_SIG_FORCE=n" >> "$CONFIG_FILE"
               echo 'Android14_Bazel:已修复zram&zsmalloc'
             elif [ "${{ inputs.kernel_version }}" = "5.10" ] || [ "${{ inputs.kernel_version }}" = "5.15" ]; then
               rm "$CONFIG/common/android/gki_aarch64_modules"
-              echo 'lib/zstdn/crypto_zstdn.ko' > $CONFIG/common/android/gki_aarch64_modules
+              touch "$CONFIG/common/android/gki_aarch64_modules"
               echo '5.10&5.15:已修复zram&zsmalloc'
             fi
 
@@ -319,7 +318,6 @@ jobs:
               echo "CONFIG_CRYPTO_LZ4K=y" >> "$CONFIG_FILE"
               echo "CONFIG_CRYPTO_LZ4KD=y" >> "$CONFIG_FILE"
               echo "CONFIG_CRYPTO_842=y" >> "$CONFIG_FILE"
-              echo "CONFIG_CRYPTO_ZSTDN=m" >> "$CONFIG_FILE"
               echo "CONFIG_CRYPTO_LZ4K_OPLUS=y" >> "$CONFIG_FILE"
             fi
           fi
